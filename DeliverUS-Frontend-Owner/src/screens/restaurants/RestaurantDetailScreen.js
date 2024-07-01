@@ -65,6 +65,10 @@ export default function RestaurantDetailScreen ({ navigation, route }) {
         {!item.availability &&
           <TextRegular textStyle={styles.availability }>Not available</TextRegular>
         }
+        {item.visibleUntil && isVisible(item.visibleUntil) &&
+          // SOLUCIÓN
+          <TextRegular textStyle={styles.visible}>Is about to dissapear!</TextRegular>
+        }
          <View style={styles.actionButtonsContainer}>
           <Pressable
             onPress={() => navigation.navigate('EditProductScreen', { id: item.id })
@@ -149,6 +153,36 @@ export default function RestaurantDetailScreen ({ navigation, route }) {
         style: GlobalStyles.flashStyle,
         titleStyle: GlobalStyles.flashTextStyle
       })
+    }
+  }
+
+  // SOLUCIÓN (Opción 1)
+  const isAboutToBeInvisible = (deadline) => {
+    console.log(deadline)
+    console.log(typeof (deadline))
+    const currentDate = new Date()
+    const deadlineDate = new Date(deadline)
+
+    const timeDiff = deadlineDate.getTime() - currentDate.getTime()
+
+    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24))
+
+    return daysLeft <= 7
+  }
+
+  // SOLUCIÓN (Opción 2)
+  const isVisible = (fechaFin) => {
+    const today = new Date()
+    const visibilityDate = new Date(fechaFin)
+
+    const diff = visibilityDate.getTime() - today.getTime()
+
+    const daysLeft = Math.ceil(diff / (1000 * 3600 * 24))
+
+    if (daysLeft <= 7) {
+      return true
+    } else {
+      return false
     }
   }
 
@@ -244,5 +278,11 @@ const styles = StyleSheet.create({
     bottom: 5,
     position: 'absolute',
     width: '90%'
+  },
+  // SOLUCIÓN
+  visible: {
+    textAlign: 'right',
+    marginRight: 5,
+    color: GlobalStyles.brandPrimary
   }
 })

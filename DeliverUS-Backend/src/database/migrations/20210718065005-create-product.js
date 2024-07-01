@@ -57,6 +57,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: new Date()
+      },
+      // SOLUCIÓN
+      visibleUntil: {
+        allowNull: true,
+        type: Sequelize.DATE
       }
     })
   },

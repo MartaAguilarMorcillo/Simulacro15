@@ -21,7 +21,8 @@ export default function EditProductScreen ({ navigation, route }) {
   const [backendErrors, setBackendErrors] = useState()
   const [product, setProduct] = useState({})
 
-  const [initialProductValues, setInitialProductValues] = useState({ name: null, description: null, price: null, order: null, productCategoryId: null, availability: null, image: null })
+  // SOLUCIÓN
+  const [initialProductValues, setInitialProductValues] = useState({ name: null, description: null, price: null, order: null, productCategoryId: null, availability: null, image: null, visibleUntil: null })
   const validationSchema = yup.object().shape({
     name: yup
       .string()
@@ -42,7 +43,11 @@ export default function EditProductScreen ({ navigation, route }) {
       .number()
       .positive()
       .integer()
-      .required('Product category is required')
+      .required('Product category is required'),
+    // SOLUCIÓN
+    visibleUntil: yup
+      .date()
+      .nullable()
   })
 
   useEffect(() => {
@@ -142,6 +147,10 @@ export default function EditProductScreen ({ navigation, route }) {
               <InputItem
                 name='order'
                 label='Order/position to be rendered:'
+              />
+              <InputItem
+                name='visibleUntil'
+                label='Visible Until:'
               />
 
               <DropDownPicker
